@@ -1,20 +1,10 @@
-Stanford CS 144 Networking Lab
-==============================
+### cs144
 
-These labs are open to the public under the (friendly) request that to
-preserve their value as a teaching tool, solutions not be posted
-publicly by anybody.
+代码 init 参考 [blog](https://github.com/PKUFlyingPig/CS144-Computer-Network)
 
-Website: https://cs144.stanford.edu
+##### lab0
+弄了很久，主要是环境问题：[blog](https://blog.csdn.net/J__M__C/article/details/131713326)
 
-To set up the build system: `cmake -S . -B build`
+还有一个点是，不要在 write/read 还未执行完之前，用 shutdown 关闭 socket。
 
-To compile: `cmake --build build`
-
-To run tests: `cmake --build build --target test`
-
-To run speed benchmarks: `cmake --build build --target speed`
-
-To run clang-tidy (which suggests improvements): `cmake --build build --target tidy`
-
-To format code: `cmake --build build --target format`
+用 std::deque<std::string> 存储 push 的结果会比用 std::deque<char> 能快点，因为 push 和 pop 操作，前者可以一次操作多个 char。
