@@ -32,19 +32,18 @@
 // the network interface passes it up the stack. If it's an ARP
 // request or reply, the network interface processes the frame
 // and learns or replies as necessary.
-class NetworkInterface
-{
-private:
+class NetworkInterface {
+ private:
   // Ethernet (known as hardware, network-access, or link-layer) address of the interface
   EthernetAddress ethernet_address_;
 
   // IP (known as Internet-layer or network-layer) address of the interface
   Address ip_address_;
 
-public:
-  // Construct a network interface with given Ethernet (network-access-layer) and IP (internet-layer)
-  // addresses
-  NetworkInterface( const EthernetAddress& ethernet_address, const Address& ip_address );
+ public:
+  // Construct a network interface with given Ethernet (network-access-layer) and IP
+  // (internet-layer) addresses
+  NetworkInterface(const EthernetAddress &ethernet_address, const Address &ip_address);
 
   // Access queue of Ethernet frames awaiting transmission
   std::optional<EthernetFrame> maybe_send();
@@ -54,14 +53,14 @@ public:
   // for the next hop.
   // ("Sending" is accomplished by making sure maybe_send() will release the frame when next called,
   // but please consider the frame sent as soon as it is generated.)
-  void send_datagram( const InternetDatagram& dgram, const Address& next_hop );
+  void send_datagram(const InternetDatagram &dgram, const Address &next_hop);
 
   // Receives an Ethernet frame and responds appropriately.
   // If type is IPv4, returns the datagram.
   // If type is ARP request, learn a mapping from the "sender" fields, and send an ARP reply.
   // If type is ARP reply, learn a mapping from the "sender" fields.
-  std::optional<InternetDatagram> recv_frame( const EthernetFrame& frame );
+  std::optional<InternetDatagram> recv_frame(const EthernetFrame &frame);
 
   // Called periodically when time elapses
-  void tick( size_t ms_since_last_tick );
+  void tick(size_t ms_since_last_tick);
 };

@@ -2,8 +2,8 @@
 
 using namespace std;
 
-void Reassembler::insert( uint64_t first_index, string data, bool is_last_substring, Writer& output )
-{
+void Reassembler::insert(uint64_t first_index, string data, bool is_last_substring,
+                         Writer &output) {
   // Your code here.
   (void)first_index;
   (void)data;
@@ -11,8 +11,7 @@ void Reassembler::insert( uint64_t first_index, string data, bool is_last_substr
   (void)output;
 }
 
-uint64_t Reassembler::bytes_pending() const
-{
+uint64_t Reassembler::bytes_pending() const {
   // Your code here.
   return {};
 }
