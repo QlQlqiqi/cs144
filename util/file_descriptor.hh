@@ -4,6 +4,7 @@
 #include <limits>
 #include <memory>
 #include <vector>
+#include "buffer.hh"
 
 // A reference-counted handle to a file descriptor
 class FileDescriptor {
@@ -62,12 +63,13 @@ class FileDescriptor {
 
   // Read into `buffer`
   void read(std::string &buffer);
-  void read(std::vector<std::unique_ptr<std::string>> &buffers);
+  void read(std::vector<std::string> &buffers);
 
   // Attempt to write a buffer
   // returns number of bytes written
   size_t write(std::string_view buffer);
   size_t write(const std::vector<std::string_view> &buffers);
+  size_t write(const std::vector<Buffer> &buffers);
 
   // Close the underlying file descriptor
   void close() { internal_fd_->close(); }

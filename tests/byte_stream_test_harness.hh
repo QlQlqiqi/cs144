@@ -66,13 +66,11 @@ struct Peek : public Expectation<ByteStream> {
   }
 
   void execute(ByteStream &bs) const override {
-    std::cout << "peek:execute start: " << std::endl;
     const ByteStream orig = bs;
     std::string got;
 
     while (bs.reader().bytes_buffered()) {
       auto peeked = bs.reader().peek();
-      std::cout << "peek:execute get: " << std::quoted(peeked) << std::endl;
       if (peeked.empty()) {
         throw ExpectationViolation{"Reader::peek() returned empty string_view"};
       }
