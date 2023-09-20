@@ -23,12 +23,20 @@ void TCPReceiver::receive( TCPSenderMessage message, Reassembler& reassembler, W
   }
 
   // 结束
-  fin_ = fin_ || message.FIN;
+  // fin_ = fin_ || message.FIN;
 
   // 这里的 idx 是以 tcp 中的 absolute index 为准
   // first index 是以 reassembler 中的 index 为准
-  auto first_index = message.seqno.unwrap( isn_, inbound_stream.bytes_pushed() + 1 ) - 1;
-  // std::cout << "first_index: " << first_index << std::endl;
+  auto absolute_idx = message.seqno.unwrap( isn_, inbound_stream.bytes_pushed() + 1 );
+  if(absolute_idx == 0) {
+    // invalid index
+    return;
+  }
+  auto first_index = absolute_idx - 1;
+  std::cout << "first_index: " << first_index << std::endl;
+  std::cout << "message.seqno: " << message.seqno.GetValue() << std::endl;
+  std::cout << "message.payload length: " << message.payload.length() << std::endl;
+  std::cout << "isn: " << isn_.GetValue() << std::endl;
 
   reassembler.insert( first_index, message.payload, message.FIN, inbound_stream );
 }

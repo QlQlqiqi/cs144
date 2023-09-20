@@ -13,7 +13,7 @@ protected:
   // SYN
   bool syn_ { false };
   // FIN
-  bool fin_ { false };
+  // bool fin_ { false };
 
 public:
   /*
