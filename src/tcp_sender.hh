@@ -36,7 +36,7 @@ class TCPSender
   // 上一次 ack 携带的 window size
   uint16_t rev_win_size_;
   // 上次接收到的 window size
-  uint16_t last_rev_win_size_;
+  // uint16_t last_rev_win_size_;
   // 如果 receiver 返回的 window size 是 0，则记录
   bool rev_win_size_zero_;
   // 是否发送 the earliest msg
