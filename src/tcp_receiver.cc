@@ -28,7 +28,7 @@ void TCPReceiver::receive( TCPSenderMessage message, Reassembler& reassembler, W
   // 这里的 idx 是以 tcp 中的 absolute index 为准
   // first index 是以 reassembler 中的 index 为准
   auto absolute_idx = message.seqno.unwrap( isn_, inbound_stream.bytes_pushed() + 1 );
-  if(absolute_idx == 0) {
+  if ( absolute_idx == 0 ) {
     // invalid index
     return;
   }

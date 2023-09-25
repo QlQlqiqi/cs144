@@ -11,7 +11,7 @@ class TCPSender
 {
   // 启动定时器
   // 如果 restart 为 true，则定时器将重新启动
-  void timer(const bool &restart);
+  void timer( const bool& restart );
   // 判断定时器是否结束
   bool expired();
   // 删除定时器

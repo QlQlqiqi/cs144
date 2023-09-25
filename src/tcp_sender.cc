@@ -54,7 +54,8 @@ optional<TCPSenderMessage> TCPSender::maybe_send()
   // 发送待发送的 msg
   while ( !wait_segs_.empty() ) {
     auto wait_msg = wait_segs_.front();
-    // std::cout << "maybe_send: add wait msg into out segs and send it: wait_msg.seqno " << wait_msg.seqno.GetValue()
+    // std::cout << "maybe_send: add wait msg into out segs and send it: wait_msg.seqno " <<
+    // wait_msg.seqno.GetValue()
     //           << " wait_msg len " << wait_msg.sequence_length() << std::endl;
     wait_segs_.pop();
     out_segs_.emplace( wait_msg );
