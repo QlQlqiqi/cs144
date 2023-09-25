@@ -1,11 +1,16 @@
 #pragma once
 
 #include "address.hh"
+#include "arp_message.hh"
 #include "ethernet_frame.hh"
+#include "ethernet_header.hh"
 #include "ipv4_datagram.hh"
 
+#include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include <list>
+#include <map>
 #include <optional>
 #include <queue>
 #include <unordered_map>
@@ -41,6 +46,22 @@ private:
   // IP (known as Internet-layer or network-layer) address of the interface
   Address ip_address_;
 
+  // 给相同 addr 发送 ARP 的间隔时间
+  static constexpr size_t ARP_GAP_MS_ { 5 * 1000UL };
+  // addr map 保存的时间长度
+  static constexpr size_t ARP_MAP_MS_ { 30 * 1000UL };
+
+  // current time ms
+  size_t cur_time_ms_;
+  // Address -> (过期时间, EthernetAddress)
+  std::map<uint32_t, std::pair<size_t, EthernetAddress>> hop_addr2eth_addr_;
+  // 待发送的 EthernetFrame
+  std::queue<EthernetFrame> wait_eth_frame_ {};
+  // 待发送的 ARP msg
+  std::queue<std::pair<EthernetHeader, ARPMessage>> wait_arp_msg_ {};
+  // Address -> (等待的过期时间, 等待 ARP 广播的 reply 的 InternetDatagram)
+  std::map<uint32_t, std::pair<size_t, std::queue<InternetDatagram>>> hop_addr2arp_expired_ms_;
+
 public:
   // Construct a network interface with given Ethernet (network-access-layer) and IP (internet-layer)
   // addresses
@@ -64,4 +85,6 @@ public:
 
   // Called periodically when time elapses
   void tick( size_t ms_since_last_tick );
+
+  std::string summary( const EthernetFrame& frame );
 };

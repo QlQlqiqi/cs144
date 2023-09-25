@@ -2,10 +2,30 @@
 
 #include "byte_stream.hh"
 
+#include <cstddef>
+#include <cstdint>
+#include <list>
 #include <string>
+#include <utility>
 
 class Reassembler
 {
+private:
+  // 下一个被 push 的 index
+  uint64_t next_index_ { 0 };
+  // reassembler 内部存储的数据
+  std::list<std::pair<uint64_t, std::string>> list_ {};
+  // reassembler 存储的数据量
+  uint64_t pending_types_ { 0 };
+  // 是否收到 end signal
+  bool is_end_ { false };
+  // stream 最后的 byte 的 next index
+  uint64_t end_index_ { 0 };
+
+  // 内部调用的 insert
+  // 修改 next_index_, first_idex, data
+  void Insert( uint64_t& first_index, std::string& data, Writer& output );
+
 public:
   /*
    * Insert a new substring to be reassembled into a ByteStream.
