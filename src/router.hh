@@ -2,6 +2,8 @@
 
 #include "network_interface.hh"
 
+#include <cstdint>
+#include <list>
 #include <optional>
 #include <queue>
 
@@ -52,8 +54,27 @@ public:
 // performs longest-prefix-match routing between them.
 class Router
 {
+  // 重新对 table_ 进行排序，按照 prefix_length_ 从小到大的顺序
+  void OrderTable();
+
+  // 判断 addr 和 route_prefix、prefix_length 是否匹配
+  bool Match( const uint32_t& addr, const uint32_t& route_prefix, const uint8_t& prefix_length );
+
+  using TableCell = struct InterfaceInfo
+  {
+    uint32_t route_prefix_;
+    uint8_t prefix_length_;
+    std::optional<Address> next_hop_;
+    size_t interface_num_;
+
+    // bool operator<( const struct InterfaceInfo& t ) const { return prefix_length_ - t.prefix_length_; }
+  };
+
   // The router's collection of network interfaces
   std::vector<AsyncNetworkInterface> interfaces_ {};
+  std::list<TableCell> table_ {};
+  // 是否需要对 table_ 排序
+  bool is_unordered_ { false };
 
 public:
   // Add an interface to the router
